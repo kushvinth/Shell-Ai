@@ -1,0 +1,172 @@
+name: Run Notebook and Save CSV
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 7 * * *'
+  push:
+    branches: [ main ]
+    paths: 
+      - 'notebook.ipynb'
+      - 'dataset/**'
+
+jobs:
+  run-notebook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Set up Jupyter Kernel
+        run: |
+          python -m ipykernel install --user --name python3
+          jupyter kernelspec list
+
+      - name: Verify Dataset Files
+        run: |
+          echo "Checking for dataset files..."
+          ls -la dataset/
+          if [ ! -f "dataset/train.csv" ]; then
+            echo "Error: dataset/train.csv not found!"
+            exit 1
+          fi
+          if [ ! -f "dataset/test.csv" ]; then
+            echo "Error: dataset/test.csv not found!"
+            exit 1
+          fi
+          echo "Dataset files found successfully"
+
+      - name: Run Notebook
+        run: |
+          echo "Starting notebook execution..."
+          papermill notebook.ipynb output.ipynb \
+            --kernel python3 \
+            --progress-bar \
+            --log-output \
+            --stdout-file notebook_stdout.log \
+            --stderr-file notebook_stderr.log
+          echo "Notebook execution completed"
+
+      - name: Check if submission file exists
+        run: |
+          echo "Checking for submission file..."
+          if [ -f "submission_breakthrough_90plus.csv" ]; then
+            echo "Submission file found!"
+            ls -la submission_breakthrough_90plus.csv
+            echo "First few lines of submission:"
+            head -5 submission_breakthrough_90plus.csv
+          else
+            echo "Submission file not found!"
+            echo "Current directory contents:"
+            ls -la
+            exit 1
+          fi
+
+      - name: Validate Submission Format
+        run: |
+          python -c "
+          import pandas as pd
+          import sys
+          
+          try:
+              df = pd.read_csv('submission_breakthrough_90plus.csv')
+              print(f'Submission shape: {df.shape}')
+              print(f'Columns: {list(df.columns)}')
+              
+              expected_cols = ['ID'] + [f'BlendProperty{i}' for i in range(1, 11)]
+              missing_cols = [col for col in expected_cols if col not in df.columns]
+              
+              if missing_cols:
+                  print(f'Missing columns: {missing_cols}')
+                  sys.exit(1)
+              
+              if df.isnull().any().any():
+                  print('Warning: Submission contains NaN values')
+              else:
+                  print('No NaN values found')
+              
+              print('Submission format is valid')
+              
+          except Exception as e:
+              print(f'Error validating submission: {e}')
+              sys.exit(1)
+          "
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and Push CSV Output
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          
+          echo "Fetching latest changes..."
+          git fetch origin main
+          
+          LOCAL=$(git rev-parse @)
+          REMOTE=$(git rev-parse origin/main)
+          
+          if [ "$LOCAL" != "$REMOTE" ]; then
+            echo "Remote has new commits, pulling changes..."
+            git pull origin main --no-edit || {
+              echo "Failed to pull changes automatically"
+              exit 1
+            }
+          fi
+          
+          git add submission_breakthrough_90plus.csv
+          git add notebook_stdout.log notebook_stderr.log output.ipynb || true
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            echo "Committing changes..."
+            git commit -m "Update submission CSV from automated notebook run - $(date '+%Y-%m-%d %H:%M:%S UTC')"
+            
+            echo "Pushing changes..."
+            for i in {1..3}; do
+              if git push origin main; then
+                echo "Successfully pushed submission file"
+                break
+              else
+                echo "Push failed, attempt $i/3"
+                if [ $i -lt 3 ]; then
+                  echo "Fetching and trying again..."
+                  git fetch origin main
+                  git pull origin main --no-edit
+                fi
+              fi
+            done
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload submission as artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: submission-and-logs
+          path: |
+            submission_breakthrough_90plus.csv
+            output.ipynb
+            notebook_stdout.log
+            notebook_stderr.log
+          retention-days: 30

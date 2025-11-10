@@ -1,0 +1,16 @@
+pandas
+numpy
+scikit-learn
+lightgbm
+xgboost
+matplotlib
+seaborn
+tensorflow
+catboost
+pytorch-tabnet
+torch
+h2o
+papermill
+jupyter
+ipykernel
+scipy

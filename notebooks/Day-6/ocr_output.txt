@@ -1,0 +1,516 @@
+
+salehSehh oe thes"s Abbas cms cgc.c., ee eee 2 ..
+i) _ mape MEd dUSUAULe pes CeiiLage ci iu Vou Gill) Lal Beli, fui)
+
+et_mape = mean_absolute percentage _error(y train[target], et_oof)
+
+gb_mape = mean_absolute perc _error(y_train[target], gb oof)
+ridge_mape = mean_absolute _error(y train[target], ridge oof)
+elastic_mape = mean_absolute percentage _error(y train[target], elastic_oof)
+
+huber_mape = mean_absolute percentage _error(y train[target], huber_oof)
+# Advanced ensemble: Exponential weighting based on validation performance
+scores = [lgb mape, rf_mape, et_mape, gb_mape, ridge mape, elastic_mape, huber_mape]
+
+# Final predictions
+
+final_preds[:, i] = (
+weights[@] * lgb test_preds +
+weights[1] * rf_test_preds +
+weights[2] * et_test_preds +
+weights[3] * gb test _preds +
+weights[4] * ridge test _preds +
+weights[S] * elastic_test_preds +
+weights[6] * huber_test_preds
+
+)
+
+# Ensemble validation score
+ensemble oof = (
+weights[@] * lgb oof +
+weights({1] * rf_oof +
+weights[2] * et_oof +
+weights[3] * gb oof +
+weights[4] * ridge oof +
+weights[S] * elastic_oof +
+weights[6] * huber_oof
+EE = mean_absolute_percentage_error(y_train[target], ensemble_oof)
+
+
+ensemble oof = (
+weights[@] * lgb oof + 7
+weights[1] * rf_oof +
+weights[2] * et_oof +
+weights[3] * gb oof +
+weights[4] * \ Oof +
+weights[5] * elastic oof +
+weights[(6] * huber_oof
+
+)
+
+ensemble_mape = mean_absolute Percentage _error(y train[target], ensemble oof)
+print(f"LightGBm MAPE: {lgb mape:.4f} (weight: {weights[@]:.3f})")
+print(f"Random Forest MAPE: {rf_mape:.4f} (weight: {weights[1]:.3f})")
+print(f"extra Trees MAPE: {et_mape: .4f} (weight: {weights[2]:.3f})")
+print(f"Gradient Boosting MAPE: {gb_mape: .4f} (weight: {weights[3]:.3})")
+print(f"Ridge MAPE: {ridge mape: -4f} (weight: {weights[4]:.3f})")
+print(f"Elastic Net MAPE: {elastic_mape: .4f} (weight: {weights[5]:.3f})")
+print(f"Huber MAPE: {huber_mape:.4f} (weight: {weights[6]:.3f})")
+print(f"Ensemble MAPE: {ensemble_mape: .4f}")
+
+# Create Submission
+
+submission = pd.DataFrame(final_preds, columns=TARGETS)
+submission.insert(@, 'ID', test.get('Ip', np.arange(1, len(test) + 1)))
+submission.to_csv(' submission_breakthrough_9eplus.csv', index=F alse)
+
+print("\nSubmission file created: submission_breakthrough_9eplus.csv")
+
+print(f"\nBreakthrough Ensemble Summary :")
+
+print(f"Features: {len(feat_cols)} (selected: {len(selected_features)})")
+
+print(f"cross-validation: 5-fold")
+
+print(f"Models: LightGBm, Random Forest, Extra Trees, Gradient Boosting, Ridge, Elastic Net, Huber")
+print(f"ensemble: Exponential weighting based on validation performance")
+
+print(f"Scaling: Robust and standard scaling for different models”)
+
+print(f"Target: 90+ score with breakthrough features and advanced ensemble")
+
+--- IMG_0449.jpg ---
+warnings, filterwannings(' ignore’)
+
+® Load
+
+print(“Loading data,..")
+
+train « pd. read_esv(‘train.esv')
+test = pd. read_esv('test.esv')
+
+# Breakthrough Feature Engineering
+
+def create_breakthrough_features(df, pca_modeleNone, scalereNone, fit_transformers=True):
+features = [f'Ccomponent(i} fraction’ for i in range(i, 6))
+features += [f‘Component{i} Property{j}' for a in mange(i, 6) for j in range(a, 212))
+
+# Enhanced interaction features with non-linear transformations
+for i in range(a, 6):
+for j in range(a, 22):
+af[f' frac{i}_prop{j}') = af[f'Component{i}_fraction') * df[f'Component{i}_Property(j}"]
+GFF frac{i}_prop{j}_sqrt') = df[f'component{i} fraction’) * np. sqrt(np.abs(df[ f*Component{i} Property{j}'}))
+df[f'frac(i}_prop(j}_log') = df[f'component{i}_fraction') * np.log(np.abs(df[f'component{i} Property{j}']) + 2)
+af[f'frac{i}_prop{j}_square'] = af[F'Component{i} fraction’) * (aFf[F*Component{i}_Property{j}"] 2)
+features .extend([f'frac(i}_prop(j}', f'frac(i}_prop(j)_sqrt’, f'frac{i}_prop(j)_log', f'frac{(i}_prop(j)_square’
+
+# Advanced weighted features with multiple aggregation methods
+for j in range(i, 11):
+prop_cols = [f‘Component{i} Property{j}' for i in range(a, 6))
+frac_cols = [f'Component{i} fraction’ for i in range(a, 6))
+
+# Multiple weighted aggregations
+df[f'weighted_mean_prop(j}'] = sum(
+af[f‘component{i} fraction’) * af[f'Component{i}_Property(j}') for a in range(a, 6)
+
+)
+mean = df[f'weighted_mean_prop{j}']
+
+df[f‘weighted_var_prop{j}') = sum(
+af[f'component{i} fraction’) * (df [fComponent{i})_Property{j}'] = mean) ** 2 for i in mange(i, 6)
+
+# Harmonic mean (important for fuel properties)
+
+--- IMG_0452.jpg ---
+131
+132
+133
+
+# Density-like blending ([Tnear but with corrections)
+
+density_blend = sum(f * r f, r in zip(fractions, safe_props))
+af[f' density blend _prop{j}'] = density blend
+
+# Reid vapor pressure-like (exponential)
+
+Fvp_blend = sum(f * np.exp(r/100) for f, r in zip(fractions, safe_props))
+GF[F*rvp_blend_prop{j}'] = rvp_blend
+
+features .extend([
+F*ron_like_blend_prop{j}', f° log_visc_blend_prop{j}",
+» F*density_blend_prop{j}', f*rvp_blend_prop{j}"
+
+# Cross-property interactions (most important combinations)
+for ji in range(1, 6):
+for j2 in range(j1+1, 7):
+af[f*prop{j1}_prop{j2}_interaction') = df[f'weighted_mean_prop{j1}"] * df[f'weighted_mean_prop{j2}']
+df[F* prop{j1}_prop{j2} ratio") = df[f*weighted_mean_prop{j1}") / (df[f'weighted_mean_prop{j2}"] + 1e-8)
+features .extend([f' prop{j1} _prop{j2}_interaction', f'prop{j1} _prop{j2}_ratio'])
+
+# Enhanced PCA with more components
+
+prop_features = [f*Component{i} Property{j}' for i in range(1, 6) for j in range(a, 11))
+if fit_transformers:
+
+Pca = PCA(n_components=12, random state=42)
+
+pca_feats = pca.fit_transform(df[prop_features])
+else:
+
+Pca = pca_model
+pca_feats = pca.transform(df[prop_features]})
+
+for k in range(12):
+af[f*pca_prop_{k+1}'] = pca_feats[:, k]
+features. append(f*pca_prop_{k+1}")
+
+# Fraction-based advanced features
+
+pca_teats = pca.tit_transtorm(dt| pi op iiiertabes s}) ee
+else: prep, sestures
+Pca = pca_model
+
+pca_feats = pca.transform(df[prop_features])
+
+for k in range(12):
+df[F*pca_prop_{k+1}"] = pca _feats[:, k]
+features. append(f'pca_prop_{k+1}')
+
+# Fraction-based advanced features
+
+frac_cols = [f*Component{i} fraction’ for i in range(1, 6)]
+
+af[*frac_sum'] = df[frac_cols].sum(axis=1)
+
+df[‘frac_std'] = df[frac_cols] -Std(axis=1)
+
+df["frac_skew'] = df[frac_cols].apply(lambda row: skew(row), axis=1)
+df["frac_kurtosis’] = df[frac_cols].apply(lambda row: kurtosis(row), axis=1)
+df[‘frac_entropy’] = -sum(df[f*Component{i} fraction'] * np. log(df[*Component{i} fracti
+
+on'] + 1e-8) for i in range(1, 6))
+df[*frac_gini*] =1 - sum(df[f*Component{i} fraction'] ** 2 for i in range(1, 6))
+
+features .extend([‘frac_sum’, ‘frac_std', ‘frac_skew', ‘frac_kurtosis', “frac_entropy', ‘frac_gini'])
+return df, features, pca
+
+# Apply feature engineering
+print("Creating breakthrough features...”)
+
+train, feat_cols, pca_model = create_breakthrough_features(train, fit_transformers=True)
+test, _, _ = create_breakthrough_features(test, pca_model=pca_model, fit_transformers=False)
+
+# Prepare BEB
+
+TARGETS = [f'BlendProperty{i}’ for i in range(1, 11)]
+X_train = train[feat_cols]
+
+y_train = train[TARGETS]
+
+X_test = test[feat_cols]
+
+# Handle NaN values
+print(“Handling NaN values...”)
+
+Yo
+Yo
+thi
+
+--- IMG_0451.jpg ---
+alll Se ee en ee ae
+68 df[f'min_prop{j}"] = df[ _cols].min(axis=1)
+69 df [f*max_prop{j}"] = df[ _cols].max(axis=1)
+
+78 df[f'mean_prop{j}"] = df[ _cols].mean(axis=1)
+
+71 df[f'std_prop{j}'] = df[prop_cols].std(axis=1)
+
+72 df[f'median_prop{j}'] = 4f[prop_cols].median(axis=1)
+
+73 df[f' skew_prop{j}"] = df[prop_cols].apply(lambda row: skew(row), axis=1)
+
+74 df[F*kurtosis_prop{j}'] = df[prop_cols].apply( lambda row: kurtosis(row), axis=1)
+75 df[F*range_prop{j}"] = df[f*max_prop{j}'] - df[#'min_prop{j}"]
+
+76 df[f*igr _prop{j}'] = df[prop_cols].quantile(o.7s, axis=1) - df[prop_cols].quantile(@.25, axis=1)
+77
+
+78 features .extend([
+
+79 f'weighted_mean_prop{j}', f*weighted_var_prop{j}', f*harmonic_mean_prop{j}",
+80 f*geometric_mean_prop{j}", f*dominant_prop{j}', f'blend_balance_prop{j}',
+
+81 fiblend_diversity_prop(j}', f'min_prop(j}', #'max_prop{j}', #'mean_prop{j}",
+82 f'std_prop{j}", #'median_prop{j}", f'skew_prop{j}', f’kurtosis_prop{j}',
+
+> . f'range_prop{j}', f'igr_prop{j}'
+
+85
+
+86 # Shell-specific advanced features
+
+87 for j in range(1, 11):
+
+88 fractions = [df[F' Component{i} fraction’ ] for i in range(1, 6)]
+
+89 Props = [df[f‘Ccomponent{i} Property{j}'] for i in range(1, 6)]
+
+90 safe_props = [np.maximum(p, 1e-6) for Pp in props]
+
+91
+
+92 # RON-like blending (non-linear octane)
+
+93 ron_blend = sum(f * (r ** 1.5) for f, r in zip(fractions, safe_props)) ** (1/1.5)
+94 df[f'ron_like_blend_prop{j}'] = ron_blend
+
+95
+
+96 # Viscosity-like blending (logarithmic)
+
+97 log_visc_blend = sum(f * np.log(r) for f, r in zip(fractions, safe_props))
+
+98 df[f*log_visc_blend_prop{j}'] = log_visc_blend
+
+99
+
+108 # Density-like blending (linear but with corrections)
+
+101 density blend = sum(f * r for f, r in zip(fractions, safe_props))
+
+102 dfif'density blend prop{i}'] = density blend
+
+DoAod
+
+
+mean = df[f' weighted mean {j}"]
+df[f'weighted_var_prop{j}' = sum(
+
+df[F*Component{i} fraction'] * (dF F*Component {i} Property{j}"] - mean) ** 2 for i in range(1, 6)
+
+# Harmonic mean (important for fuel properties)
+
+safe_props = [np .maximum(d[F*Component{i} Property{j}"], le-6) for i in range(1, 6)]
+harmonic_mean = sum(df[f*Component{i} fraction’ ] / safe_props[i-1] for i in range(1, 6))
+df[F*harmonic_mean_prop{j}"] = 1 / harmonic_mean
+
+# Geometric mean (for multiplicative properties)
+log_geo_mean = sum(df[f*Component{i} fraction’ ] * np.log(safe _props[i-1]) for i in range(1, 6))
+df[f*geometric_mean_prop{j}'] = np.exp(log_geo_mean)
+
+# Component dominance with ranking
+frac_array = np-array([df[f'Component{i} fraction’ ] for i in range(1, 6)])
+dominant_idx = np.argmax(frac_array, axis=0)
+df[f'dominant_prop{j}"] = df..apply(lambda row:
+row[ f' Component {dominant_idx[row.name] + 1} Property{j}'], axis=1)
+
+# Blend balance and diversity
+df[f*blend_balance_prop{j}'] = 1 - df[frac_cols].std(axis=1)
+df[f*blend_diversity prop{j}'] = df[frac_cols].std(axis=1) / (df[frac_cols].mean(axis=1) + 1le-8)
+
+# Advanced statistics
+
+df[f'min_prop{j}'] = df[prop_cols].min(axis=1)
+
+df[f'max_prop{j}'] = df[prop_cols].max(axis=1)
+
+df[f'mean_prop{j}'] = df [prop_cols].mean(axis=1)
+
+df[f'std_prop{j}'] = df[prop_cols].std(axis=1)
+
+df[f'median_prop{j}'] = df [prop_cols].median(axis=1)
+
+df[f'skew_prop{j}'] = df[prop_cols].apply(lambda row: skew(row), axis=1)
+df[f'kurtosis_prop{j}'] = df[prop_cols].apply(lambda row: kurtosis(row), axis=1)
+df[f*range_prop{j}'] = df[f'max_prop{j}'] - df[f'min_prop{j}"]
+
+df[f*iqr_prop{j}'] = df[prop_cols].quantile(@.75, axis=1) - df [prop_cols].quantile(e.25, axis=1)
+
+lp ae ¢* ee <Ree| e
+
+--- IMG_0454.jpg ---
+7 hh ee ae ee ee ry, © CES
+152 TARGETS = [f'BlendProperty{i}' for i in range(1, 11)) es
+153 X_train = train[feat_cols]}
+
+154 y_train = train[ TARGETS] I
+isS  X_test = test[feat_cols]
+156
+
+157. # Handle NaN values
+
+158 print(“Handling NaN values...”)
+
+159 X_train = X_train.fillna(e)
+
+160 X_test = X_test.fillna(e)
+
+161
+
+162 # Feature scaling for different models
+
+163 = scaler_robust = RobustScaler()
+
+164 X_train_robust = scaler_robust.fit_transform(x_train)
+165 X_test_robust = scaler_robust.transform(x_test)
+
+166
+
+167 scaler_standard = Standardscaler()
+
+168 X_train_standard = scaler_standard.fit_transform(x_train)
+169 =X_test_standard = scaler_standard.transform(x_test)
+170
+
+171 # Feature selection for some models
+
+172 print("Performing feature selection...)
+173 selector = SelectFromModel(
+
+174 LGBMRegressor(n_estimators=200, random_state=42, verbose=-1),
+175 prefit=False,
+
+176 threshold='median*
+
+177 —*)
+
+178 X_train_selected = selector.fit_transform(x_train, y train.iloc[:, @])
+179 X_test_selected = selector.transform(x_test)
+180
+
+181 selected_features = [feat_cols[i] for i in range(len(feat_cols)) if selector .get_support()[i}]
+182 print(f"original features: {len(feat_cols)}")
+
+183 print(f"selected features: {len(selected_features) }")
+
+184
+
+185 # Cross-Validation Setup
+
+186 kf = KFold(n_splits=5, shuffle=True, random_state=42)
+
+187 final_preds = np.zeros((X_test.shape[@], len(TARGETS)))
+
+# Cross-Validation Setup
+kf = KFold(n_splits=5, shuffle=T > Pandom_state=42)
+final_preds = np.zeros((X_test.shape[o], len(TARGETS) ))
+
+print("Training Breakthrough Ensemble. oat)
+print(f"Features: {len(feat_cols)} (selected: {len(selected_features)})”)
+
+for i, target in enumerate(TARGETS):
+print(f"\nTraining for {target}.. 2)
+
+# Out-of-fold predictions for each model
+lgb_oof = np.zeros(X_train.shape[o])
+rf_oof = np.zeros(X_train.shape[@])
+et_oof = np.zeros(x_train. shape[@])
+gb_oof = np.zeros(x_train.shape[o])
+oof = np.zeros(Xx_train.shape[@])
+elastic_oof = np.zeros(X_train.shape[@])
+huber_oof = np.zeros(X_train.shape[@])
+
+# Test predictions for each model
+
+._test_preds = np.zeros(x_test.shape[o])
+rf_test_preds = np.zeros(x_test.shape[@])
+et_test_preds = np.zeros(x_test.shape[@])
+
+_test_preds = np.zeros(x_test.shape[o])
+ridge test_preds = np.zeros(X_test.shape[@])
+elastic_test_preds = np.zeros(x_test.shape[@])
+huber_test_preds = np.zeros(x_test.shape[0])
+
+for fold, (tr_idx, val_idx) in enumerate(kf.split(x_train)):
+# Model 1: Optimized LightGam
+model_lgb = LGBMRegressor(
+n_estimators=12000, learning rate=0.0015, random_state=fold,
+num_leaves=31, subsample=0.85, colsample_bytree=0.85,
+reg_alpha=0.01, reg _lambda=0.01, min_child_samples=20,
+
+hn ee. Be dS eee ae -~
+
+et_test_preds += model_et.predict(X_test) / Kr.N_epsae
+
+# Model 4: Gradient Boostifg
+
+model_gb = GradientBoostingRegressor(
+n_estimators=500, learning_rate=0.01, max_depth=6,
+min_samples_split=5, min_samples_leaf=2, random_state=fold
+
+model _gb.fit(x_train.iloc[tr_idx], _train[target] .iloc[tr_idx])
+gb_oof[val_idx] = model _gb.predict (x_train.iloc[val_idx])
+gb_test += model_gb.predict(x_test) / kf .n_splits
+
+# Model 5: Ridge (with robust scaling)
+
+model_ridge = Ridge(alpha=0.03, random_state=fold)
+model_ridge.fit(x_train_robust[tr_idx] » y_train[target] -iloc{tr_idx])
+ridge_oof[val_idx] = model_ridge.predict(x_train_robust(val_idx])
+ridge _test_preds += model_ridge.predict(x_test_robust) / kf.n_splits
+
+# Model 6: Elastic Net (with standard scaling)
+
+model elastic = ElasticNet (alpha=0.008, 11_ratio=0.3, random_state=fold, max_iter=2000)
+model elastic. fit(x_train_standard[tr_idx], y_train[target] -iloc{tr_idx])
+elastic_oof[val_idx] = model_elastic.predict(x_train_standard[val_idx})
+elastic_test_preds += model_elastic.predict(x_test_standard) / kf.n_splits
+
+# Model 7: Huber (robust to outliers)
+
+model_huber = HuberRegressor(alpha=0.01, epsilon=1.35)
+
+model_huber. fit(x_train_robust [tr_idx], y_train({target]. iloc{tr_idx])
+huber_oof[val_idx] = model_huber. predict(x_train_robust/val_idx])
+huber_test_preds += model_huber. predict (x_test_robust) / kf.n_splits
+
+et_mape = mean_absolute. percentage _error(y train(target], et_oof)
+
+gb_mape = mean_absolute  percentage_error(y train[target], ) oof )
+ridge_mape = mean_absolute _ percentage_error(y_train(target], ridge_oof)
+elastic_mape = mean_absolute _ percentage_error(y train[target], elastic_oof)
+
+
+SSAA ar ree erg crt eee ot ee te, » A
+n_estimators=12000, iearning rate=0.0u1> » Fandom state=toia,
+
+num_leaves=31, subsample=0.85, colsample_bytree=0.385,
+
+reg_alpha=0.01, reg | -@1, min_child samples=20,
+Objective="regression 11’ # Use MAE for better MAPE alignment
+
+)
+
+model _lgb. fit(
+X_train.iloc[tr_idx], y_train[ target] .iloc[{tr_idx],
+eval_set=[(x_train. iloc[val_idx], y_train[target].iloc[val_idx])],
+
+; callbacks=[early stopping(stopping_rounds=159) , log_evaluation(200) ]
+
+1gb_oof[val_idx] = model_lgb.predict(x_train.iloc[val_idx])
+lgb_test_preds += model _lgb.predict(x_test) / kf.n_splits
+
+# Model 2: Optimized Random Forest
+model rf = RandomForestRegressor(
+n_estimators=800, max_depth=20, min_samples split=5,
+min_samples leaf=2, random_state=fold, n_jobs=-1
+)
+model_rf.fit(x_train.iloc[tr_idx], y_train[target] .iloc[tr_idx])
+rf_oof[val_idx] = model _rf.predict(x_train.iloc[val_idx])
+rf_test_preds += model_rf.predict(x test) / kf.n_splits
+
+# Model 3: Extra Trees
+model _et = ExtraTreesRegressor(
+n_estimators=600, max_depth=18, min_samples split=3,
+min_samples_leaf=1, random_state=fold, n | jobs=-1
+)
+model_et.fit(x_train.iloc[tr_idx], y_train[target] .iloc[tr_idx])
+et_oof[val_idx] = model_et.predict(x_train.iloc[val_idx])
+et_test_preds += model_et.predict(x_test) / kf .n_splits
+
+# Model 4: Gradient Boosting
+model gb = GradientBoostingRegressor(
+n_estimators=500, learning rate=0.01, max_depth=6,
+min_samples_split=5, min_samples_leaf=2, random_state=fold
+)
+

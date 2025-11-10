@@ -1,0 +1,908 @@
+[-0.00s] (DS mater dreatvough soph, any
+
+© > Users > Lenovo > OneDrive > Documents > shell al > ® modelt_breakthrough 9oplus_8948,py >.
+
+. warnings, filterwannings(' ignore’)
+ge = ® Load
+XG print("Loading data... he )
+wv traine Pd. read_esv(‘train.esy')
+pe 18 test = pd.nead_cav('test.csv')
+as
+20 # Breakthrough Feature Engineering
+Ge as def create_breakthrough_features(df, Pea_modeleiione, scalereNone, fit_transformers=True):
+a features = [f'component{i}_ fraction’ for i in range(a, 6))
+BS 1 features += CE *component{i}_Property{j}' for i in mange(i, 6) for j in range(a, 22))
+2s # Enhanced interaction features with non-linear transformations
+A 26 for i in range(a, 6):
+PY] for j in range(a, 22):
+28 | GFL Frac(i)_prop(j}") = af[F' Component{i}_fraction') * af[f' Component{i}_Property(j}')
+29 aff‘ frac{i}_prop{j}_sqrt') = af[f'Component{i}_fraction') * np. sqrt(np.abs(dF[ f'Component{i}_Property{j}')))
+30 af [F'Frac(i)_prop(j}_log') = d#[f'component{i}_ fraction’) * np.10g(np. abs (dF F' Component{i}_Property{j}')}) + a)
+ES af[f*frac{i}_prop(j}_square') = af [F'Component({i}_fraction') * (aF[fComponent{i}_Property{j}') ** a)
+2 features.extend([f'frac(i}_prop(j}', f'frac(i}_prop(j}_sqrt’, f'frac(i)}_prop{j)}_log', f'frac(i}_prop{j}_square’
+3
+M # Advanced weighted features with multiple aggregation methods
+3s for j in range(a, 11):
+36 prop_cols = [f'Component{i}_Property(j}' for i in range(i, 6))
+” frac_cols = [f'Component{i}_fraction’ for i in range(a, 6))
+as
+39 ® Multiple weighted aggregations
+40 df[f'weighted_mean_prop{j}')] = sum(
+a. aF[FComponent{i}_fraction') * df[f'component{i)_Property(j}') for a in nange(a, 6)
+a2 Outloc
+a wean = df{f"weighted_mean_prop{3)") ashi “pat
+ad af [Ff 'weighted_var_prop(j}'] = sum(
+Q 4s af[f*Component{i}_fraction') * (df[f'Component{i}_Property{j}'} - Mean) ** 2 for i in range(a, 6) things up and yo
+46
+& a7 Launch Outlo
+a8 # Harmonic mean (important for fuel properties) z
+PH ©0.A0 C 1 Meand o ceils to anahze IG) en ts.coli2 spaces 4 UTES CRUE
+
+GED @amecaecHoue
+
+[1.00s] @:
+te
+“a
+
+WN 040 € 1 fe 0nd 0 cetst0 anatyze
+
+Print ("Loading data...)
+train = pd.read_csv(‘train.csv")
+test = pd.read_csv(*test.csv')
+
+® Greakthrough Feature Engineering
+af,
+
+. features (| l=None, scaler=None, fit_transformers=True);
+features = [f"Component{i} fraction’ for i in range(1, 6))
+
+features += [f*Component{i} Property{j}' for i in range(1, 6) for j in range(1, 11))
+
+# Enhanced interaction features with non-linear transformations
+for i in range(1, 6):
+for ie renee( ain 11):
+“frac{i}_prop{j}") = GF[F*Component {i} fraction'] * af [ f'Component{i} Property{j}']
+
+aff" Frac{ i) _prop{j}_sqrt’] = df[f' component {i} fraction’) * Np, sqrt(np, abs (df[f'Component{i} Property{j}')))
+af [F* frac{i}_prop(j}_log*] = aF[F*Component({i} fraction’) * Np. log(np,abs(df[f'Component{i} Property{j}'|) + 1)
+af [F'frac{i}_prop{j}_square’) = af [f'Component{i} fraction’) * (dF[f*Component{i} Property{j}'] ** 2)
+features.extend([f'frac(i}_prop(j}', f'frac(i)_prop(j}_sqrt’, ¥'frac{i}_prop{j}_log', f'frac{i}_prop(j)_square’ }
+
+* Advanced weighted features with multiple aggregation methods
+for j in range(1, 11):
+prop_cols = [f'Component{i} Property({j}' for i in range(1, 6)]
+frac_cols = [f'Component{i} fraction’ for i in range(1, 6))
+
+# Multiple weighted aggregations
+GF[F'weighted_mean_prop(j}'] = sum(
+df [f ‘Component (i)_fraction’] * df[f'Component({i)} Property({j}'] for 4 in range(1, 6)
+
+mean = df[f'weighted_mean_prop(j}']
+df[f'weighted_var_prop{j}'] = sum
+
+df[F "Component (1)_fraction'] * (df[f*Component(1} Property{j}'] - mean) ** 2 for i in range(, 6) Your new Outlook
+) Your email’s not sy
+® Harmonic mean (important for fuel properties) things up and you’
+safe_props = [np.maximum(df[f‘Component{i} Property{j}'], 1e-6) for 4 in range(1, 6))
+harmonic_mean = sum(df[f'Component(i)_fraction'] / safe_props{i-1] for 4 in range(1, 6)) Launch Outloo!
+
+AEN hi armnntic mann aeantaV') = 4 t hanmanir maan
+
+PA) in 15,colt2 Spaces:4 UTF-8 CRLF {
+
+PmecacHnoue
+
+[2.00s] * File Exit Selection View = €>
+o "© model breakthrough, DOplun soapy X
+
+> Users > Lenovo > OneDrive > Documents > shell
+
+- ew ve
+
+a
+&
+
+WR ©0A0 ¢ tfeandocetsto analyze
+
+2
+i
+
+”
+
+def
+
+# Advanced weighted ial
+for 4 in wa ts | 44)I
+
+PB Search &-
+
+a1 > © model1_breakthrough.90plus.69.48.py > ,,
+
+breakthrough_features(df, Pca_model=None, scalersiione, fit. .transformers=True):
+Te@kures  emveray)) Peeper prepigg ay TEL as _prepyssovqre aT TSG sp_propyyy_sug y 1 TPMELSs_PT Opi ys_oyumre yy
+
+h multiple aggregation methods
+
+f Component {4}. Property{j}’ for 4 in 4, 6
+eg zt s i ‘Component (i} fraction’ fop i in rote tt ft
+
+# Multiple weighted aggregations
+af[f' weighted_nean_prop(j} Hs. Ha
+be df[f'Compenent(i)_fraetion' | d[¥' Component (i}_ =Preperty(j}'] for 4 in pange(a, 6)
+lean = df[f'weighted
+aff f ‘wei, lei preptay" on
+df[F‘ component (i}_fraction‘ ai (aFLF component {i}_Praperty{j}' ] = Wean) ** 2 for i in Pange(i, 6)
+
+# Harmenie mean sled for fuel properties)
+
+Arfe-pewpe = iS € Wats ae nit mi iin
+Ae we Comore) Foe _ fraction’ ] (ite) é rape ark if a oo 6)
+aT hata pas yallfts ]=4/ haPWeniemean
+
+# Geometric fieah (for miltiplicative properties)
+
+= [¥'component{i}_fraction'] * pp. 1ag( ]) for i in (4; 6))
+een ene = alge may EAT fe ae
+
+# Component dominance with ranking
+
+free. array a Component {i “in ] for 4 in pange(as 6)1)
+sae gi “hae] 1) _Poperty (4) I, aise) Your new Outlook 3
+
+Your email’s not sync
+# Blend balance and rote: things up and you'll |
+pi blend_balance_prop{j} ie = Sie at Aye i)
+df[f ‘blend_diversity_pro Hf ‘je ath (dflfrac_cols].jieai(axis=1) + ie- =a) Launch Outlook
+
+PERRY nts, cot 12 Spaces:4 UTF-8 CRLF (a J
+
+E@EEEEED Sn ceo: cue 2
+
+[3.00s] — i ou P Search &-
+i) e model!_breakthrough 90plus 8948.py X
+> Users > Lenovo > OneDrive > Documents > shell ai > ‘© modelt_breakthrough 90plus 89.48.py > _
+Pp ~ def create_breakthrough features(df, Pca_model=None, scaler=none, fit_transformers=True):
+49 # HarmOni€ mean (important] for fuel properties)
+bg « safe. props = [np nih on Camporese] Property(d}y te at fr in fares, 1 “
+harmonic_mean ‘Faction’ @_props[i-1] for i in range(4, 6
+> * aiff ‘haraonie mean Bropld}'T = =1/ harmenic_mean .
+=] # Geametric mean (far wrtipliective properties)
+i} 54 106 geo wean = sum(df{ f ‘Component (3}_fraction’ j * pp. we tag safe.gropel=t)) for i in range(4, 6))
+dF{F geometric mean ron] © Wh oipC ini man ‘
+B 7 # Component dominance with Fanking
+A 4 paray Ps P ara om io alla
+CC] a donor ropa ] = 4f -apply(ianbda row:
+4 Foul F' Component Component { dominant_idx[ row -name] + 4) _froperty{j}'], axis=1)
+63 # Blend balance and bord
+64 df ff wiend_balanee_prap ane i = df{frae_cois].std(axisei)
+68 aff! blend_diversiiy, gratij’ jz 2 afffrae sais] dalanien) / (df { frac_ceis|.mean(axis=i) + 1e-8)
+66
+7 # Advaticed Statistics
+68 ienme| j= ‘iin ee at)
+69 #! =
+76 af Relat 1 Sale oo
+2 df| rage | 2 dF [prep vie eitcient)
+a af [F' skew_prop(j}'] = eee. ious ran # Skew (Faw), aiis=4)
+14 FL Ff kurtosis -propl a}! yA [prop_ceis]; ‘igo Few ire axis=1)
+73
+7 pi Prog z arforonssele) pisediocs 5, aaise) 2 "lovon-sis) Guantiie(@.26, axis=i) a at
+@ * features extend(| ings up and yout
+19 F' weighted mean_prop{j}' i Ff weighted. var _prop{j}' rnp hartionie Aeai_prop(j}' i
+aa fi trie Xj}! s f' dominant_prop{j}', £'bierd_bai {i} Launch Outlook
+& #4 f! ‘Bien | Aivireiey proptai', ¥ ‘ain greet wp ‘h_preptz}" Talore)’ i
+PR @oa0 « 1 file and 0 cells to analyze
+
+EM tn ts,.cott2 spaces4 UIF-8 CRF ts P
+
+r “GSD #mcaecs one 4
+
+[4.00s] ~~ ‘rhe cam sélection View --- €5 P& Search
+
+oO 2 ‘model _breakthrough_90plus_89.48.py x
+C: > Users > Lenovo > OneDrive > Documents > shell ai > ®
+
+Pp 21 def create_breakthrough_features(df,
+
+model_breakthrough_90plus_89.48.py iy
+» Pca_model=None, scaler=None, fit_transformers=True):
+
+68 df[F'min_prop{j}"] = df[ _cols].min(axis=1)
+go rs) df[#'max_prop{j}'] = df[, _cols].max(axis=1)
+7° df[f'mean_prop{j}'] = df [prop_cols].mean(axis=1)
+71 df[F'std_prop{j}'] = 4f[prop_cols].std(axis=1)
+> 72 df[f'median_prop{j}'] = df [prop_cols].median(axis=1)
+73 df[f* skew_prop{j}'] = df[prop_cols].apply(lambda row: skew(row), axis=1)
+& 74 df[f'kurtosis s_prop{j}'] = df[prop_cols].apply(lambda row: kurtosis(row), axis=1)
+75 df[F'range_prop{j}"] = df[*max_prop{j}"] - df[f'min_prop{j}"]
+76 af[f*igr_prop{j}"] = df[prop_cols].quantile(o.75, axis=1) - df[prop_cols].quantile(@.25, axis=1)
+7
+& 78 features.extend([
+A 7 f'weighted_mean \_prop{j}', f'weighted_var _prop{j}', f'harmonic_mean 1 prop{j}",
+80 ¥" geometric_mean ._prop{j}', f'dominant -_Prop{j}', f*blend_balance »_prop{j}",
+81 |  f'blend_diversity prop{j}', #'min_prop{j}', f'max_prop{j}', f'mean_prop{j}',
+82 f"std_prop{j}’, #'median_prop{j}', f'skew_prop{j}', f*kurtosis_prop{j}',
+83 f'range_prop{j}', f*iqr_prop{j}"
+84 })
+85
+86 # Shell-specific advanced features
+87 for j in range(1, 11):
+88 fractions = [df[#*component{i} fraction‘ ] for i in range(1, 6)]
+89 props = [df[* component{i}_Property{j}"] for i in range(1, 6)]
+98 safe_props = [np.maximum(p, 1e-6) for P in props]
+91
+92 # RON-like blending (non-linear octane)
+93 ron_blend = sum(f * (r ** 1.5) for f, r in zip(fractions, safe _props)) ** (1/1.5)
+94 df[f*ron_like_blend_prop{j}'] = ron_blend
+95
+96 # Viscosity-like blending (logarithmic) Outlool
+97 log_visc_blend = sum(f * np.log(r) ir ed zip(fractions, safe »_props)) het on not s
+98 df[f*log_visc_blend ‘Je sc. “
+Q . [f*log_visc_blend_prop{j}'] = log visc_| I up and you
+100 # Density-like blending (linear but with corrections)
+3 101 density blend = sum(f * r for f, r in zip(fractions, safe_props)) Launch Outloo!
+a oye afi f'density blend prop{i}'] = density blend
+
+ee te! a (IRM 115, co12 Spaces:4 UTF-8 CRLF {
+' “GREED P®mceceoue 9
+
+[5.00s] ™ File Edit Selection View --- €>
+
+P Search &-
+Oo e model1_breakthrough 90plus_89.48.py X
+Fn aor creme ote ® model |_breakthrough_90plus_89.48.py > ..
+p 21 def create ee ee e. or — pealersaine, fit_transformers=True):
+on pret prope ot php waseamaegPlA& Lés2¢bhop Iafprobsi" ranesCl, 83]
+fo 8 props = [df[f tlocnemey co i J probs i s} range(1, 6)]
+6 s@feuprons pee in props]
+% ron_blend = sum ** 1.5) for f, r fe zip(fractions, safe props)) ** (1/1.5)
+2 bef Psnen ak wa begg3}p PoeBE
+a3 um(F * (r 1.5) for F, 25 in zip(fractions, safe_props)) ** (1/1.5)
+Bee ete ‘cet aa
+sd og_visc_blend = matt log(r) ry ff @ = zip(fractions, safe! props))
+ag aetaee Nai See hin
+B a = sum(f og(r) <Phe 4 zip(fractions, safe_props))
+188 $FbEsdoayvistcbheasmnpptibsdcr eee an
+A 199 density blend = s , r in zip(fractions,’ safe°props))"_
+199 aera pesearog Gi pe aur cbggree oe
+193 for f, r in Zip(fractions, safe_props))
+49a FE ideosity pleedapenetie Jexpdensityzblend
+193 rvp_blend = sum('*| hp ie oF carmen for telh rin’ zip( fractions; °Safe_props))
+194 id yal 2 ASBPBIERY:
+195 arte pe cual ly } exp(r/100) er f, r in zip(fractions, safe props) )
+196 Sahiste-legieaent ] = rvp_blend
+104 F'rOn_Like™blend prop jy j°F! log_visc'| tins tk safe_props))
+198 fe nd_prop{j y i PES rop SEI Dre :
+199 }) ¥'ron_like_blend_prop{j f* log_visc_bler saroptine.
+110 f'densityn| meat: 5 "¢ rvp_blend_prop{j}"
+44a * crdd property ie actions! {most’ impértant pb a Ne
+ya for ji in range(1,
+A 113 # Cregs- “BORE FBS mastigns “(most important coubingtaons)
+ia for j1 iaepanges, ae ght prop{j2}_interaction'] = df[f'weighted mean _prop{j1}'] * df[f'weighted mean Lpron(a2) ]
+445 for 92 #5) € renee th ratio] = df| ted _méan_prop{j1}'] / (df[f" det hted_mean_prop{j t + 1e-8)
+ug dk tcpeoecs ieaherarh el na riff wedenced p65 PraRembaa Jo) AE gh ghted_ [mean prop j2}"] Your new Outlook ;
+47, FL prop rth weighted feean prretatt J] / (a¥[F"weighted_mean_prop{j2}"] + 1¢- -8) Your email’s not syn
+118 features. extend((f' notte A interaction’, £'prop{j1}.prop{j2}_ratio' )) things up and you'll
+Q 119 ape reeaiee . Hasyn Sl a Propetty(9ft | for a) in’ rangeca, DUset ind Fange(4, 11))
+129 # Ei ni ymore comport
+> 121 Pong etunes Semana! edd iin range(1, 6) For jin Seda 11)) Launch Outlook
+122 if fit-teansformers: co. 40 c.noyacrannn ir ES
+(RY @0a0
+
+PAM 15, cot 12 Spaces:4 UTF8 CRIF i¢
+
+" GED #mcaczoue 4
+
+[6.01s] P& Search &~
+
+© > Users > Lenovo > OneDrive > Documents > shell ai > @ model1_breakthrough_90plus_89.48,py > ...
+
+52) 2 = def create_breakthrough_features(df, Pca_model=None, scaler=None, fit_transformers=True):
+225 Pvpebiend’= sum¢t>™ npi
+
+et exp(r/100)=tert; r in zip(tractions, sate_props))
+Ws GEL Pep ds SUMEFOp (5 gxR] FOpeBlehar f, r in zip(fractions, safe_props))
+pad 1? df[f'rvp_blend_prop{j}‘] = rvp_blend
+ion features.extend([
+> toe featuresrexteadgi end |_prop{j}', f!log_visc_blend_prop{j}',
+tte F'aenslivepbtaadppopegi)s. +f r¥pepvéna_phapejprop{j}',
+ue ])  f’density_blend_prop{j}’, f'rvp_blend_prop{j}*
+ue i)
+ts i # Cross-property interactions (most important combinations)
+44a FoFO91S iW PARBEKI;"HEaCctions (most important combinations)
+B ig for Fbriqaranepbage$jisi, 7):
+445 for dF [Fprapggd}1ptep{J2}_ interaction’ ] = df[f'weighted_mean_prop{j1}"] * df[F ‘weighted _mean_prop{j2}"]
+A i SELF prep{J8) prop Ja) _tatzoagtiog? | raétficuaiabindaresesepon(J12a9/ al givedchter_peapi9p9n{32)id-0)
+ae #Ebtupesn Edt doar Pt iPhone gt}ophop (gl f Inedebtedonegnsppe—h}32} Ip/ofa§bF waightey_mean_propij2) ee)
+118 features.extend([f* prop{j1}_prop{j2}_interaction’, "prop{j1}_prop{j2} natio' })
+138 # Enhanced) PCA withimore components
+i2@ ropiFeatdresA—xf EncampencaeRapePbsperty{j}' for i in range(1, 6) for j in range(1, 11)]
+123 bropifeetunesormbfscomponent{i} Property{j}' for i in range(1, 6) for j in range(1, 11))
+433 if fptateapsfienmebmponents=12, random_state=42)
+123 pea_feRES(a m1 ForMmdemnpaatEedzdres |) J
+134 elsepca_feats, = pca.fit_transform(df[prop_features])
+438 elsepca = pca_model andom te
+126 Pea_feBEa_Moded. transform(df[prop»features])@> )
+127 pca_feats = pca.transform(df[prop_features])
+128 for k in range(a2):
+129 for ff’ pange(22) tk+1)" J! = peal feats[tyk]r«
+138 ¢€btipes_appendkr1p:] pregackeatsf:, k]
+i 133 features.append(f*‘pca_prop_{k+1}')
+132 ¢tion-base adkvanteg feptarésats/ k]
+433 srhcochioncbespdoageencet fentiteses for i in range(1, 6)] Your new Outlook av
+134 firgcicols calf Coupprpat (id1éqactivgaxifon)i in range(1, 6)] Your email’s not syncii
+Q 135 df['frac_sun'] = df[frac_cels].sum(axis=1) things up and you'll b
+136 f[' frac_std(.] )--dEfragccolsd std payisst)ie row: pe hal ions
+132 df[ ' frac_skew)]i=odf Efnagceals leapplyppayedannaw: n 8i8Xt8m}) axis=1) I h Outlook
+& 138 al trax harap} fbn canister con fariagtn} else fraction’] + 1e-8) for i in range(1, ¢
+TR @0a0
+
+% “RB v5, cai2 Spaces: 4 UTF-8 CRLF (9 Py
+
+i OGD emcaeceoue x
+
+[7.01s] »@ File Edit Selection View -- €>5
+
+® modelt_breakthrough 90plus 89.48.py X
+
+p Pst
+124
+
+125
+
+$e 126
+127
+
+> 128
+129
+
+130
+
+C3 Pa
+132
+
+RB 133
+134
+
+135
+
+A 16
+137
+
+138
+
+139
+
+140
+
+141
+
+142
+
+143
+
+144
+
+145
+
+146
+
+147
+
+148
+
+149
+
+150
+
+151
+
+152
+
+153
+
+154
+
+g 155
+156
+
+a
+158
+
+Hl 0040
+
+> Users > Lenovo > OneDrive > Documents > shell ai > @ model1_breakthrough_90plus_89.48.py > ...
+
+def create_breakthrough_features(df, pca_model=None, scaler=None, fit_transformers=True):
+pca_teats = pca.tit_transtorm(dt|prop_teatures |)
+else:
+Pca = pca_model
+pca_feats = Pca.transform(df[prop_ features ])
+
+for k in range(12):
+df[f*pca_prop_{k+1}"] = pca_feats[:, k]
+features. append(f'pca_prop_{k+1}")
+
+# Fraction-based advanced features
+
+frac_cols = [f'Component{i} fraction’ for i in range(1, 6)]
+
+df[*frac_sum'] = df[frac_cols] + Sum(axis=1)
+
+df[‘frac_std'] = df[frac_cols].std(axis=1)
+
+df["frac_skew"] = df[frac_cols].apply(lambda row: skew(row), axis=1)
+df[‘frac_kurtosis’] = df[frac_cols].apply(lambda row: kurtosis(row), axis=1)
+df[*frac_entropy’] = -sum(df[f*Component{i} fraction'] * np.log(df[f*Component{i} fi
+df[*frac_gini*] = 1 - sum(df[f*Component{i} fraction'] ** 2 for i in range(1, 6))
+
+features.extend([‘frac_sum’, ‘frac_std', ‘frac_skew', “frac_kurtosis', ‘frac_entropy', ‘frac_gini'])
+return df, features, pca
+
+# Apply feature engineering
+print(“Creating breakthrough features...")
+
+train, feat_cols, pca_model = create_breakthrough_features(train, fit_transformers=True)
+test, _, _ = create_breakthrough_features(test, pca_model=pca_model, fit_transformers=False)
+
+# Prepare BBEB
+
+TARGETS = [f*BlendProperty{i}’ for i in range(1, 11)]
+X_train = train[feat_cols]
+
+y_train = train[ TARGETS]
+
+X_test = test[feat_cols]
+
+# Handle NaN values
+print("Handling NaN values...”)
+
+(AR) 15, con r2
+
+raction’] + 1e-8) for i in range(1, 6))
+
+Your new Outlook a
+Your email’s not sync
+things up and you'll |
+
+Spaces:4 UTF-8 CRLF {éFf
+
+2 GED @mcaczoxe 4
+
+[8.01s] * File Edit Selection View + €>
+
+‘© modelt_breakthrough 90plus_89.48.py X
+C > Users > Lenovo > OneDrive > Documents > shell ai > @
+
+21
+
+P 139
+go 140
+m1
+
+142
+ef
+14a
+B 145
+146
+
+147
+
+= 148
+1a9
+
+A 1se
+asa
+
+182
+
+153
+
+1s4
+
+ass
+
+156
+
+187
+
+iss
+
+159
+
+160
+
+161
+
+162
+
+163
+
+F 164
+165
+
+166
+
+167
+
+168
+
+169
+Qe
+i771
+
+& 172
+173
+
+RI @040
+
+modell _breakthrough 90phus_89.48.py > ..
+def create_breakthrough_features(df, Pca_modeliione, scalerstione, fit_transformersetrue):
+
+@F{“Frac_entropy'] = ~suan(df[& {i)_fraction') * st -¥ ty alae ] + 1e-8) for 1 in range(1, 6))
+
+@F["frac_gini") = 2 - sun(dfl {i}_fraction'] ** 2 for i in range(1, 6)
+
+features.extend([‘frac_sum', ‘frac_std', ‘frac_skew', “frac_kurtosis', ‘frac_entropy’, ‘frac_gini‘})
+
+return df, features, pca
+
+© Apply feature engineering
+print(“creating breakthrough features...")
+
+train, feat_cols, pca_model = create_breakthrough_features(train, fit_transformers=true)
+test, _, _ = create_breakthrough_features(test, pca_model=pca_model, fit_transformers=false)
+
+# Prepare GG
+TARGETS = Bok sane for i in range(1, 11))
+yt pre
+X test = test{feat_cols}
+
+# Handle NaN values
+print(“Handling NaN values...")
+X_train = X_train.fillna(e)
+X_test = X_test.fillna(e)
+
+# Feature scaling for different models
+scaler_robust = RobustScaler()
+
+X_train_robust = scaler_robust.fit_transform(x_train)
+X_test_robust = scaler_robust.transform(x_test)
+
+scaler_standard =
+
+Standardscaler()
+X_train_standard = scaler_standard.fit_transfora(x_train)
+
+X_test_standard = scaler_standard.transform(x_test)
+
+# Feature selection for some models
+print(“Performing feature selection...”)
+selector = SelectFromndel(
+
+Your new Outlook av
+Your email’s not synci
+things up and you'll b
+
+Launch Outlook
+
+PIR unts.cott2 spaces Urs CRF a P
+
+GD emecacth out Y
+
+[9.01s] 2» File Edit Selection View --- €>7
+
+© model _breakthrough 90plus 89.48. py X
+
+© > Users > Lenovo > OneDrive > Documents >
+
+166 cat a) Mees — 20688) 1s UES.
+
+167 scaler_standard = standardscaler
+ts KCebeins Searaata--Sseatard
+iss = Rtest"sebaadeat—-.egoderst
+
+tye X_test_standard = scaler_standard.transform(x Ctest
+
+o
+p
+i
+> 171 Y jeinetere selection for some models
+&
+B
+A
+
+172 prift ("Performing -Festire-Se1eetion. .
+473 wel ne en lection. . 4
+
+174 ‘ors=200, random _state=42, verbose=-1
+i “porrersiee n_estimators=200, random: i state=42, verbose=-1),
+176 fhedian'
+in threshold="median’
+
+178 ( train_selected = washer: fig ee sform(X ( train, y train.iloc[:, @
+ip % teen catlethad— = sag¢betbar. il y_train.iloc[:, @
+j@8 X_test_selected = selector. rector x a}
+
+189 princtes features = Feat cols{i let iin renee int feat. eh} if selector.get_: peer {]
+483 cfsatuses real ~—T a it ci) nge: iene feat_cols)) if selector.get—support
+igo PRIRECf*Celgiees features: 1; =
+
+184 ico f"selected features: = selected_4 jerearessy
+
+484 # cross-validation setup
+48s Calpine random_state=42)
+
+189 efnar<preddn-sppiterss ‘Shiai sat a
+484  +final_preds = py X_test. er ol (Bima 3}
+188 print("Training Breakthrough Ensemble. . 3
+
+168 BRint ee eae Pisetecteg
+
+: {len(selected_features)})"
+: 499 = print(f"Features: {len(feat_cols selected: frenfsstected-Fererens i)
+ad 433 fotos i, target in semi eg
+404 ‘or +7, FI ri t ak
+154 # Out-of-fold predictions. forteach model
+498 IgbUboF* =" ALI 2er Es eK abe ii a del Your new Outlook a
+139 ca = n BP 22 PBS! fe Your email’s not sync
+197 fat p: 28F8s ripen things up and you'll |
+@ ite b_oef = np: ZeFes(* train: shape idiheiia
+eg ant ore. agr28 pat
+
+Bidsese>bor oPrsepe areiasahanspels Launch Outlook
+[RY @oa0 ss
+
+PRM v5, cot 2 Spaces:4 UTF-8 CRLF (|
+
+r aD FW S66 Ss
+
+[10.01s] *3 File Edit Selection View --- €5
+
+© model_breakthrough 90plus_8948.py X
+G > Users > Lenovo > OneDrive
+
+196
+197
+
+ive > Documents > shell ai > ® model1_breakthrough_90plus_89.48.py > _.
+lgb_oof = np. zeros(X_train.shape[@])
+f_oof = np.zeros(x_train, 0})
+et_oof = np.zeros(x_train. @))
+gb_oof = np.zeros(x_train.shape[o])
+ridge_oof = np.zeros(x_train.shape[@])
+elastic_oof = np.zeros(X_train.shape[o])
+huber_oof = np.zeros(x_train.shape[o])
+
+# Test predictions for each model
+lgb_test_preds = np.zeros(X_test.shape[@])
+rf_test_preds = np.zeros(X_test.shape[o])
+et_test_preds = np.zeros(X_test.shape[@])
+gb_test_preds = np.zeros(X_test.shape[o])
+ridge test_preds = np.zeros(X_test.shape(@])
+elastic_test_preds = np.zeros(X_test.shape[o])
+huber_test_preds = np.zeros(X_test.shape[@])
+
+for fold, (tr_idx, val_idx) in enumerate(kf.split(x_train)):
+# Model 1: Optimized Lightcan
+model_lgb = LGBMRegressor(
+n_estimators=12000, learning_rate=0.0015, random_state=fold,
+num_leaves=31, subsample=0.85, colsample_bytree=0.85,
+reg_alpha=@.01, reg_lambda=0.01, min_child_samples=20,
+objective='regression_l1’ # Use MAE for better MAPE alignment
+
+)
+
+model_lgb. fit(
+
+X_train.iloc(tr_idx], y_train[{target] -iloc[tr_idx],
+eval_set=[(x_train.iloc{val_idx], y_train[target].iloc{val_idx])],
+callbacks=[early_stopping(stopping_rounds=15e) , log_evaluation(200) ]
+)
+1gb_oof[val_idx] = model_lgb.predict(x_train.iloc{val_idx])
+1gb_test_preds += model_lgb.predict(x_test) / kf .n_splits
+
+# Model 2: Optimized Random Forest
+model_rf = RandomForestregressor(
+
+” ectimatare=200 mav danth=20 min camloc cnlites
+
+Buscar
+
+Your new Outlook a
+Your email's not syn
+things up and you'll
+
+Spaces4 UTF-8 CRIF ig!
+
+SGD emcees oue ¥
+
+[11.01s] *§ File Edit Selection View --- €>
+
+: - PD Search &-
+O e model1_breakthrough_90plus_8948.py X
+© > Users > Lenovo > OneDrive > Documents > shell ai > e model1_breakthrough_90plus 89.48.py > _.
+Pm X train: flog [tr idx] jy |trainftarget} aise fenced] {!oc[val_idx|
+223 eval _set=[(X_ train. val_idx], ‘y' train[target]il6c[val ‘idk])],
+go 224 callbacks=[early s' ( stopping_rounds=15@), log_evaluation(200) ]
+225 ) / 1i
+226 1gb_oof[val_idx] = model_Igb: predict (x train. iloc[val idx])
+2 227 Igb_test_preds += model_Igb.predict(x test) / kf.n splits
+228
+229 # Model 2: Optimized random Forest
+7) 230 model_rf = RandomForestRegressor(
+231 n_estimators=800, max_depth=20, min_samples split=5,
+B 232 min_samples_leaf=2, random_state=-fold, n 1_jobs=-1
+233 )
+234 model_rf.fit(x_train-iloc[tr_idx], y train[target].iloc[tr_idx])
+A 235 rf_oof[val_idx] = model_rf.predict(x train.iloc[val_idx])
+236 rf_test_preds += model_rf.predict(x_test) / kf.n_splits
+237
+238 # Model 3: Extra Trees
+239 model_et = ExtratreesRegressor(
+2490 n_estimators=600, max_depth=18, min_samples split=3,
+241 min_samples_leaf=1, 1 state=fold, n_jobs=-1
+242 »)
+243 model_et.fit(x_train.iloc[tr_idx], y_train{target] .iloc[tr_idx])
+244 et_oof[val_idx] = model_et .predict(x_train.iloc[val_idx])
+245 et_test_preds += model_et.predict(x_test) / kf.n_splits
+246
+247 # Model 4: Gradient Boosting
+248 model_gb = GradientBoostingregressor(
+249 n_estimators=500, learning rate=0.01, max_depth=6,
+250 min_samples_split=5, min_samples_leaf=2, random_state=fold
+251 ) Your new Outlook z
+252 model_gb.fit(x_train.iloc(tr_idx], y_train[target].iloc[tr_idx]) Your email's not syn
+253 gb_oof[val_idx] = model |_gb.predict(x_train.iloc[val_idx]) . sue
+Q 254 @b_test_preds += model_gb.predict(x_test) / kf.n_splits things up you'll
+255
+3 256 # Model 5: Ridge (with robust scaling) Launch Outlook
+- e 257 model ridge = Ridge(alpha=0.03. random state=fold)
+oAo
+
+FAR 15, corz Spaces:4 UTF-8 CRIF ig
+
+” SGD #mceeh owe 4
+
+[12.01s] *J File Edit Selection View -: €>
+
+? . P Search — &-~
+([) © modelt breakthrough 90plus_99.48,py x
+© > Users > Lenovo > OneDrive > Documents > shell ai > @ model1_breakthrough_90plus_89.48.py > ...
+p 245 et_test_preds += model_et.predict(x_test) / kf.n_splits
+246
+247 # Model 4: Gradient Boosti
+be) 248 model _gb = GradientBoostingRegressor(
+249 n_estimators=500, learning _rate=0.01, max_depth=6,
+> 250 min_samples_split=5, min_samples_leaf=2, random_state=fold
+251 )
+252 model |_gb.fit(x_train.iloc[tr_idx] » y_train[target].iloc[tr_idx])
+we) 253 gb_oof[val_idx] = model_gb.predict(x_train.iloc[val_idx])
+254 | gb_test_preds += model _gb.predict(x_test) / kf.n_splits
+255
+B 256 # Model 5: Ridge (with robust scaling)
+257 model _ridge = Ridge(alpha-0.@3, random_state=fold)
+A 258 model_ridge.fit(x_train_robust[tr_idx], y_train[target] .iloc[tr_idx])
+259 ridge_oof[val_idx] = model_ridge.predict(x_train_robust[val_idx])
+260 ridge _test_preds += model_ridge.predict(x_test_robust) / kf.n_splits
+261
+262 # Model 6: Elastic Net (with standard scaling)
+263 model elastic = ElasticNet(alpha=0.008, 11_ratio=0.3, random_state=fold, max_iter=2000)
+264 model elastic -fit(x_train_standard[tr_idx], _train[target].iloc[tr_idx])
+265 elastic_oof[val_idx] = model_elastic. predict(x_train_standard[val_idx])
+266 elastic_test_preds += model_elastic.predict(x_test_standard) / kf.n_splits
+267
+268 # Model 7: Huber (robust to outliers)
+269 model_huber = HuberRegressor(alpha=0.01, epsilon=1.35)
+270 model_huber. fit(x_train_robust[tr_idx], y_train[ target] .iloc[tr_idx])
+271 huber_oof[val_idx] = model_huber.predict(x_train_robust[val_idx])
+272 huber_test_preds += model_huber.predict(x_test_robust) / kf.n_splits
+273
+274 # Calculate individual model mMAPE
+275 lgb_mape = mean_absolute percentage error(y train[target], lgb_oof) Your new Outlook ;
+276 rf_mape = mean_absolute percentage error(y train[target], rf_oof) Your email's not syn
+Q 277 et_mape = mean_absolute _percentage _error(y train[target], et_oof) things up and you'll
+278 gb_mape = mean_absolute percentage error(y train[target], gb_oof)
+§S 279 ridge_mape = mean_absolute percentage _error(y train[target], ridge_oof) Launch Outlook
+288 elastic_mape = mean_absolute percentage _error(y train[target], elastic_oof)
+
+RY @0a0
+
+WEN in 15, coi12 spaces:4 UTF-8 CRF ta
+
+PmMcaBCzoue ry
+
+[13.01s] ™@ File Edit Selection View +: €>
+
+i PB Search ie i &-
+OQ e ‘madel_breakthrough_90plus_89.48.py x
+© > Users > Lenovo > OneDrive > Documents > shell ai > @ model1_breakthrough_90plus_89.48.py > ...
+p 274 a caters { te hae Psat bag’ ay mkpber predict(xX_test robust) / kt.n_splits
+275 Igb eet mean _absolute_perc age era rool target), iy oof)
+ge 276 seh targ
+ced see) enain fe ee y
+28 ‘Ee Fat ‘ ae
+2 279 error vt i : eS oof)
+288 7 i seed oof)
+& a rw = ty ue n thet af astic’ oof)
+283 DRS GaReRE antSaba?e} POReRELSE EAE, eee pe eet ee
+B 284 be sonehs = ae mape, rf_mape, et_mape dge : mape, elastic_maj uber_mape]
+285 ~score vl we) for store’ ae pe pr ataral e ERpBheneEsT Sig ae
+38 Si tS: pe, et_mape, gl ape, se J. »_mape, elastic "maps, r_mape]
+A <
+
+287 we $5 <a dw for 8 efits] mape_scores] # Exponential weighting
+288 aL ae = CS
+
+289 weights prdy{tetad.weieht for w in weights]
+296 final na eeeh os ce =(
+
+291
+
+232 Final
+233
+294
+295
+296
+333 ) igieaiel * huber. _ test_preds
+388 2 Ensemble Pe score
+381 ensemble oof 2
+wi 3 aj fiir
+“meSmeagne stat £ of Your new Outlook
+@ weientsl gy = § things up and you’!
+Seiets}2] =
+& weipnesté) = Launch Outlook
+» «= s{S
+
+A @oao FR sco spaces4 ure CRF i
+
+r GED Fa cacsoue 4
+
+[14.01s] oO ‘® model1_breakthrough_90plus_89.48,py X
+© > Users > Lenovo > OneDrive > Documents > shell ai > @ model1_breakthrough_90plus_89.48,py > ...
+pe) 300 # Ensemble validation score
+301 ensemble_oof = (
+302 Weights(@] * lgb_oof + I
+fs 303 weights[1] * rf_oof +
+304 weights[2] * et_oof +
+pe 305 weights[3] * gb_oof +
+™ weights[4] * ridge_oof +
+307 weights(5] * elastic_oof +
+C3 308 weights(6] * huber_oof
+309 )
+FB 318s ensemble_mape = mean_absolute_percentage_error(y_train[ target), ensemble_oof)
+ui |
+312 print(f"Lightcem MAPE: {1gb_mape:.4f} (weight: {weights[@]:.3*})")
+A 313 print(f"Random Forest MAPE: {rf_mape:.4f} (weight: {weights[1]:.3f})")
+314 print(f"extra Trees MAPE: {et_mape: .4f} (weight: {weights[2]:.3})")
+315 print(f"Gradient Boosting MAPE: {gb_mape: .4f} (weight: {weights[3]:.3f})")
+316 print(f"Ridge MAPE: {ridge_mape: .4f} (weight: {weights[4]:.3f})")
+317 print(f"Elastic Net MAPE; {elastic_mape: .4f} (weight: {weights[5]:.3})")
+318 print(f"Huber MAPE: {huber_mape: .4f} (weight: {weights [6]:.3f})")
+319 Print(f"Ensemble MAPE: {ensemble_mape: .4f}")
+320
+
+321 # Create Submission
+
+322 submission = pd.DataFrame(final_preds, columns=TARGETS)
+
+123 submission.insert(@, ‘ID', test.get('rIp', np.arange(1, len(test) + 1)))
+324 — submission. to_csv(‘submission_breakthrough_9eplus.csv', index=False)
+325
+
+126 ~~ print("\nSubmission file created; submission_breakthrough_9@plus.csv")
+327 print(f"\nBreakthrough Ensemble Summary:")
+
+28 print(f"Features: {len(feat_cols)} (selected: {len(selected_features)})”)
+329 print(f"Cross-validation; 5-fold”)
+
+130 print(f"Models: LightGBM, Random Forest, Extra Trees, Gradient Boosting, Ridge, Elastic Net, Huber”) Your new Outlook ar
+231 print(f’Ensemble: Exponential weighting based on validation performance") Your email’s not sync
+
+oy 132 print(f"scaling: Robust and standard scaling for different models") things up and you'll |
+333 print(f" Target: 90+ score with breakthrough features and advanced ensemble")
+
+& Launch Outlook
+
+(RY @oa0 MRM unts.cont2 spaces:4 UTF-8 CRF a F
+
+Po 2 GSD #m cach eue 4
